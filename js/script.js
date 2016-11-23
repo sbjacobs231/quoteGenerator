@@ -47,13 +47,34 @@ var quotes = [
 	}
 ]
 
-//Interval
+//Timer Interval set to 9 seconds
 var timer = setInterval(function(){ printQuote(); }, 9000);
 //Random Quote
 var getRandomQuote = function() {
+	//Get Random Integer
 	var randomInt = Math.floor(Math.random() * quotes.length);
+	//Quote Index
 	var quoteObject = quotes[randomInt];
+	//Quote Object within Quotes Array
 	return quoteObject;
+}
+//Display each quote once before showing repeat of quote
+var usedQuotes = [];
+var quoteTracker = function() {
+	//Get Random Quote
+	var quoteObject = getRandomQuote();
+	//If quote index is already used get another quote
+	if (usedQuotes.indexOf(quoteObject.index) > -1) {
+		//Clear the usedQuotes if they've all been used once
+		if (usedQuotes.length === quotes.length) {
+			usedQuotes = [];
+		}
+		quoteTracker();
+	//Otherwise push the index into the tracker array and return the quote object
+	} else {
+		usedQuotes.push(quoteObject.index);
+		return quoteObject;
+	}
 }
 //Random Color
 var getRandomColor = function() {
@@ -66,13 +87,19 @@ var getRandomColor = function() {
 }
 //Print Quote
 var printQuote = function() {
-	var newQuote = getRandomQuote();
+	var newQuote = quoteTracker();
+	//Adds HTML to the page
 	document.getElementById('quote-box').innerHTML = '<p class="quote">' + newQuote.quote + '</p>' 
 		+ '<p class="source">DJ Khaled</p>' + '<img class="profile" src="' + newQuote.source + '">';
+	//New Color to the Background
 	var newColor = getRandomColor();
 	document.body.style.backgroundColor = newColor;
+	// Clears Interval
 	clearInterval(timer);
+	//Restarts Interval
 	timer = setInterval(function(){ printQuote(); }, 9000);
+	//Figuring out which quotes have been used
+	console.log(usedQuotes);
 	return;
 }
 
