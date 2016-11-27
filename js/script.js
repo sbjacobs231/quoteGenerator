@@ -69,7 +69,7 @@ var quoteTracker = function() {
 		if (usedQuotes.length === quotes.length) {
 			usedQuotes = [];
 		}
-		quoteTracker();
+		return quoteObject = quoteTracker();
 	//Otherwise push the index into the tracker array and return the quote object
 	} else {
 		usedQuotes.push(quoteObject.index);
